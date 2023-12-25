@@ -203,9 +203,9 @@ main:
 
     input_loop:
         beq  $t5, 10, exit_input
+
         la   $a0, Position
         li   $v0, 4
-
         syscall              # print("Position [")
         move $a0, $t5
         li   $v0, 1
@@ -213,7 +213,7 @@ main:
         la   $a0, colon
         li   $v0, 4
         syscall              # print("] :")
-        li   $v0, 5          # get input number
+        li   $v0, 5          # get input integer
         syscall
 
         sw   $v0, ($s1)      # store inputed value to current address of list
@@ -226,7 +226,7 @@ main:
         jr $ra
 
 .data
-#--------------------main--------------------------------------------------
+    #--------------------main--------------------------------------------------
     mikosA:                           .word   0
     mikosB:                           .word   0
     mikosC:                           .word   0
