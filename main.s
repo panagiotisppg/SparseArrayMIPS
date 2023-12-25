@@ -27,6 +27,7 @@ main:
         #while((op>=1) && (op<=8))
         #(op>=1)
         bge  $v1, 1, firstCondition
+        beqz $v1, loop             # If user just enters (nothing) it should just ask for input again
         blt  $v1, 1, exit
 
     firstCondition:
@@ -232,8 +233,8 @@ main:
     mikosC:                           .word   0
     i:                                .space  4
     op:                               .space  4
-    pinA:                             .space  40 // 40 instead of 10 cuz we ant 10 integers so 10*4 bytes
-    pinB:                             .space  40 // 40 instead of 10 cuz we ant 10 integers so 10*4 bytes
+    pinA:                             .space  40 # 40 instead of 10 cuz we ant 10 integers so 10*4 bytes
+    pinB:                             .space  40 # 40 instead of 10 cuz we ant 10 integers so 10*4 bytes
     SparseA:                          .space  20
     SparseB:                          .space  20
     SparseC:                          .space  20
@@ -241,12 +242,12 @@ main:
     values:                           .asciiz " values "
     Reading_Array_A:                  .asciiz "Reading Array A\n\n"
     Reading_Array_B:                  .asciiz "Reading Array B\n\n"
-    Creating_Spare_Array_A:           .asciiz "Creating Sparse Array A\n"
-    Creating_Spare_Array_B:           .asciiz "Creating Sparse Array B\n"
-    Creating_Spare_Array_C:           .asciiz "Creating Sparse Array C\n"
-    Displaying_Sparse_Array_A:        .asciiz "Displaying Sparse Array A\n"
-    Displaying_Sparse_Array_B:        .asciiz "Displaying Sparse Array B\n"
-    Displaying_Sparse_Array_C:        .asciiz "Displaying Sparse Array C\n"
+    Creating_Spare_Array_A:           .asciiz "Creating Sparse Array A\n\n"
+    Creating_Spare_Array_B:           .asciiz "Creating Sparse Array B\n\n"
+    Creating_Spare_Array_C:           .asciiz "Creating Sparse Array C\n\n"
+    Displaying_Sparse_Array_A:        .asciiz "Displaying Sparse Array A\n\n"
+    Displaying_Sparse_Array_B:        .asciiz "Displaying Sparse Array B\n\n"
+    Displaying_Sparse_Array_C:        .asciiz "Displaying Sparse Array C\n\n"
     #-----------------readOption-----------------------------------------------
     Choice:                           .asciiz "\n-----------------------------\n1.Read Array A \n2.Read Array B \n3.Create Sparse Array A \n4.Create Sparse Array B \n5.Create Sparse Array C= A + B \n6.Display Sparse Array A \n7.Display Sparse Array B \n8.Display Sparse Array C \n0.Exit\nChoice? "
     #----------------readPin/printSparse----------------------------------------
