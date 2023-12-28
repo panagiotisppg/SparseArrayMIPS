@@ -6,7 +6,7 @@ class Sparse_Array {
 		
 	public static void main (String args[]) {
 		
-		int i, mikosA=0, mikosB=0, mikosC=0, op;		
+		int mikosA=0, mikosB=0, mikosC=0, op;		
 		int [] pinA = new int [10];
 		int [] pinB = new int [10];
 		int [] SparseA = new int [20];
