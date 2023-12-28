@@ -14,13 +14,9 @@
 
     .text
     .globl main
-# tststs
-# fr
-# tes
+
 main:
-# ap
-# hi
-#haha pan pan
+
 #--------------------------------main-----------------------------------
     loop:
         li   $a0, '\n'
