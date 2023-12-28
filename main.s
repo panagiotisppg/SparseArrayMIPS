@@ -11,12 +11,11 @@
     # Lastname: Papageorgiou
     # AM:       p3220281
 ####################################
-# test
+
     .text
     .globl main
-#i try
+
 main:
-# testing
 #--------------------------------main-----------------------------------
     loop:
         li   $a0, '\n'
