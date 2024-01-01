@@ -11,11 +11,12 @@
     # Lastname: Papageorgiou
     # AM:       p3220281
 ####################################
-
+# test
     .text
     .globl main
 
 main:
+
 #--------------------------------main-----------------------------------
     loop:
         li   $a0, '\n'
@@ -40,6 +41,7 @@ main:
         #op=1
         beq  $v1, 1, ReadingArrayA
         bne  $v1, 1, not_1
+
     ReadingArrayA:
         #System.out.println("Reading Array A");
         la   $a0, Reading_Array_A 
@@ -67,6 +69,7 @@ main:
         #op=2
         beq  $v1, 2, ReadingArrayB
         bne  $v1, 2, not_2
+
     ReadingArrayB:
         #System.out.println("Reading Array B");
         la   $a0, Reading_Array_B 
@@ -94,11 +97,23 @@ main:
         #op=3
         beq  $v1, 3, CreatingSpareArrayA
         bne  $v1, 2, not_3
+    
     CreatingSpareArrayA:
         #System.out.println("Creating Sparse Array A" );
         la   $a0, Creating_Spare_Array_A 
         li   $v0, 4
         syscall
+
+        la   $a0, pinA
+        la   $a1, SparseA
+        addi $sp, $sp, -4          #saves off the $ra
+        sw   $ra, 0($sp)           #save return address
+
+        jal createSparce
+
+        lw   $ra, 0($sp)       
+        addi $sp, $sp, 4 
+
         j loop
 
     not_3:
@@ -106,6 +121,7 @@ main:
         #op=4
         beq  $v1, 4, CreatingSpareArrayB
         bne  $v1, 4, not_4
+    
     CreatingSpareArrayB:
         #System.out.println("Creating Sparse Array B" );
         la   $a0, Creating_Spare_Array_B 
@@ -118,6 +134,7 @@ main:
         #op=5
         beq  $v1, 5, CreatingSpareArrayC
         bne  $v1, 5, not_5
+    
     CreatingSpareArrayC:
         #System.out.println("Creating Sparse Array C = A + B");
         la   $a0, Creating_Spare_Array_C 
@@ -131,6 +148,7 @@ main:
         #op=6
         beq  $v1, 6, DisplayingSparseArrayA
         bne  $v1, 6, not_6
+    
     DisplayingSparseArrayA:
         #System.out.println ("Displaying Sparse Array A");
         la   $a0, Displaying_Sparse_Array_A 
@@ -144,6 +162,7 @@ main:
         #op=7
         beq  $v1, 7, Displaying_SparseArrayB
         bne  $v1, 7, not_7
+    
     Displaying_SparseArrayB:
         #System.out.println ("Displaying Sparse Array B");
         la   $a0, Displaying_Sparse_Array_B 
@@ -157,6 +176,7 @@ main:
         #op=8
         beq  $v1, 8, DisplayingSparseArrayC
         bne  $v1, 8, not_8
+    
     DisplayingSparseArrayC:
         #System.out.println ("Displaying Sparse Array C");
         la   $a0, Displaying_Sparse_Array_C 
@@ -198,7 +218,7 @@ main:
     readPin:
 
         move $s1, $a0         #preserve address of array
-        move $s2, $a1         #preserve address of elements
+        move $s2, $a1         #preserve ammount of elements
 
         li   $t5, 0           # counter
 
@@ -222,7 +242,48 @@ main:
         addi $t5, 1          # nums inputed ++
         j input_loop         # loop
 
-        exit_input:
+    exit_input:
+
+        jr $ra
+
+    #-------------------createSparse (int [] pin, int [] Sparse)-------------------
+    createSparce:
+
+        li $t0, 0                       # i = 0
+        li $t1, 0                       # k = 0 
+
+        move $t2, $a0                   # address of pin                 
+        move $t3, $a1                   # address of sparse
+
+    loop_create:
+        
+        bge $t0, 10, end_loop_create    # If (i >= pin.length): goto end_loop_create (pin.length = 10)
+ 
+        lw $t6, ($t2)                   # pin[i]
+     
+        beq $t6, $zero, else            # if (pin[i] == 0): goto else
+
+        addi $t1, 1                     # k++
+        sw $t0, ($t3)                   # Sparse[k] = i
+        addi $t3, 4                     # next element in Sparse
+        
+        addi $t1, 1                     # k++
+        sw $t6, ($t3)                   # Sparse[k] = pin[i]
+        addi $t3, 4                     # next element in Sparse
+
+        j loop_create                   # for again
+
+    else:
+        addi $t0, 1                     # i++
+        # addi $t4, 4                     # next element in Sparse
+
+        j loop_create                   # for again
+
+    end_loop_create:
+    
+        move $v0, $t1                   # return k 
+
+    exit_create:
 
         jr $ra
 
@@ -233,11 +294,11 @@ main:
     mikosC:                           .word   0
     i:                                .space  4
     op:                               .space  4
-    pinA:                             .space  40 # 40 instead of 10 cuz we ant 10 integers so 10*4 bytes
-    pinB:                             .space  40 # 40 instead of 10 cuz we ant 10 integers so 10*4 bytes
-    SparseA:                          .space  20
-    SparseB:                          .space  20
-    SparseC:                          .space  20
+    pinA:                             .space  40 # 40 instead of 10 cuz we want 10 integers so 10*4 bytes
+    pinB:                             .space  40 # 40 instead of 10 cuz we want 10 integers so 10*4 bytes
+    SparseA:                          .space  80
+    SparseB:                          .space  80
+    SparseC:                          .space  80
     line:                             .asciiz "-----------------------------\n"
     values:                           .asciiz " values "
     Reading_Array_A:                  .asciiz "Reading Array A\n\n"
@@ -255,3 +316,8 @@ main:
     Position_with_colon:              .asciiz "Position:   "
     Values:                           .asciiz "Values: "
     colon:                            .asciiz "] :"
+    #--------------------createSparse-------------------------------------------
+    pin:                              .word 40
+    pin_length:                       .word 10
+    Sparse:                           .word 40
+    newline:                          .asciiz "\n"
